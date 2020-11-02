@@ -4,6 +4,9 @@ import dataService from "./services/data";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 
+import { Table } from "react-bootstrap";
+import BootstrapTable from "react-bootstrap-table-next";
+
 const App = () => {
   const [data, setData] = useState([]);
   const [username, setUsername] = useState("");
@@ -49,17 +52,16 @@ const App = () => {
     }
   };
 
-
   const loginForm = () => {
     return (
       <div>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
       </div>
     );
   };
@@ -70,16 +72,48 @@ const App = () => {
     setUser(null);
   };
 
+  // for expandable table
+  const columns = [
+    {
+      dataField: "id",
+      text: "ID",
+    },
+    {
+      dataField: "name",
+      text: "Name",
+    },
+    {
+      dataField: "gender",
+      text: "Gender",
+    },
+    {
+        dataField: "age",
+        text: "Age",
+      },
+      {
+        dataField: "caseStatus",
+        text: "Case Status",
+      },
+      {
+        dataField: "plan",
+        text: "Plan",
+      },
+  ];
+
+  const expandRow = {
+    renderer: (row) => <div>Status History of {row.name}</div>,
+  };
+
   return (
-    <div>
-      <p>HFI Assessment</p>
+    <div className="container">
+      <h1>HFI Data Viewer</h1>
 
       {user === null ? (
         loginForm()
       ) : (
         <div>
-          <p>{user.name} logged-in</p>
-          <button onClick={logoutHandler}>logout</button>
+          <p>{user.name} logged-in <button onClick={logoutHandler}>logout</button></p>
+          
         </div>
       )}
 
@@ -87,14 +121,9 @@ const App = () => {
         <div>Please login to view the data</div>
       ) : (
         <div>
-          <h2>Data</h2>
-          <ol>
-            {data.map((d) => (
-              <li key={d.id}>
-                {d.name}, {d.gender}, {d.age}
-              </li>
-            ))}
-          </ol>
+          <BootstrapTable  keyField='id' data={data} columns={columns} expandRow={expandRow}>
+
+          </BootstrapTable>
         </div>
       )}
     </div>
