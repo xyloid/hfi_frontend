@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const App = () => (
-  <div>
-    <p>Hello world</p>
-  </div>
-);
+import dataService from "./services/data";
+
+const App = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const d = dataService.getAll();
+    setData(d);
+  }, []);
+
+  return (
+    <div>
+      <p>Hello world</p>
+    </div>
+  );
+};
 
 export default App;
