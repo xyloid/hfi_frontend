@@ -17,6 +17,18 @@ const App = () => {
     }
   }, []);
 
+  useEffect(async () => {
+    const loggedUserJSON = window.localStorage.getItem("loggedUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      console.log(user);
+      setUser(user);
+      dataService.setToken(user.token);
+      const d = await dataService.getAll();
+      setData(d);
+    }
+  }, []);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -25,6 +37,7 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password });
       console.log(user);
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
       dataService.setToken(user.token);
       setUser(user);
       setUsername("");
@@ -60,6 +73,11 @@ const App = () => {
     </form>
   );
 
+  const logoutHandler = () => {
+    window.localStorage.removeItem("loggedUser");
+    setUser(null);
+  };
+
   return (
     <div>
       <p>HFI Assessment</p>
@@ -69,6 +87,7 @@ const App = () => {
       ) : (
         <div>
           <p>{user.name} logged-in</p>
+          <button onClick={logoutHandler}>logout</button>
         </div>
       )}
 
@@ -80,8 +99,7 @@ const App = () => {
           <ol>
             {data.map((d) => (
               <li key={d.id}>
-                {" "}
-                {d.name}, {d.gender}, {d.age}{" "}
+                {d.name}, {d.gender}, {d.age}
               </li>
             ))}
           </ol>
