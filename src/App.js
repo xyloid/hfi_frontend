@@ -4,7 +4,7 @@ import recordService from "./services/record";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 import RecordTable from "./components/RecordTable";
-import { Button } from "react-bootstrap";
+import { Button, Navbar, Nav } from "react-bootstrap";
 
 import { initializeRecords } from "./reducers/recordReducer";
 import { useDispatch } from "react-redux";
@@ -51,16 +51,32 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>HFI Data Viewer</h1>
       <Router>
-        <div>
-          <Link style={padding} to="/">
-            Home
-          </Link>
-          <Link style={padding} to="/login">
-            Login
-          </Link>
-        </div>
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link href="#" as="span">
+                <Link style={padding} to="/">
+                  home
+                </Link>
+              </Nav.Link>
+              <Nav.Link href="#" as="span">
+                {user ? (
+                  <em>
+                    {user.name} logged in
+                    <Button variant="primary" onClick={logoutHandler}>
+                      logout
+                    </Button>
+                  </em>
+                ) : (
+                  <Link to="/login">login</Link>
+                )}
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+
         <Switch>
           <Route path="/login">
             <div>
@@ -70,9 +86,6 @@ const App = () => {
                 <div>
                   <p>
                     <b>{user.name}</b> logged-in{" "}
-                    <Button variant="primary" onClick={logoutHandler}>
-                      logout
-                    </Button>
                   </p>
                 </div>
               )}
