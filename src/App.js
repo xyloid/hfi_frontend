@@ -11,8 +11,6 @@ import { useDispatch } from "react-redux";
 const App = () => {
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -25,37 +23,17 @@ const App = () => {
     }
   }, [dispatch]);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-    console.log("logging in with", username, password);
-
+  const loginHandler = async (username, password) => {
     try {
       const user = await loginService.login({ username, password });
       console.log(user);
+      setUser(user);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
       recordService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
       recordService.getAll().then((res) => dispatch(initializeRecords(res)));
     } catch (exception) {
       console.log(exception);
     }
-  };
-
-  const loginForm = () => {
-    return (
-      <div>
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        />
-      </div>
-    );
   };
 
   // handle logout
@@ -69,7 +47,7 @@ const App = () => {
       <h1>HFI Data Viewer</h1>
 
       {user === null ? (
-        loginForm()
+        <LoginForm handleSubmit={loginHandler} />
       ) : (
         <div>
           <p>
