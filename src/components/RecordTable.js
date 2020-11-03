@@ -57,7 +57,7 @@ const RecordTable = () => {
               {typeof row.statusHistory === "undefined" ? (
                 <div></div>
               ) : (
-                <div>  
+                <div style={{backgroundColor:'#e7e8e1'}}>  
                   <BootstrapTable
                     keyField="_id"
                     data={row.statusHistory}
@@ -79,8 +79,8 @@ const RecordTable = () => {
     
 
   return (
-    <div>
-      <BootstrapTable
+    <div style={{backgroundColor:'#e6f1f5'}}>
+      <BootstrapTable 
         keyField="id"
         data={records}
         columns={columns}
