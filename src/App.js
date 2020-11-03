@@ -115,16 +115,43 @@ const App = () => {
 
   const expandRow = {
     renderer: (row) => {
+      if (typeof row.statusHistory !== "undefined") {
+      }
+
+      const cols =[{
+        dataField: "statusCode",
+        text: "Status",
+      },
+      {
+        dataField: "timestamp",
+        text: "Time",
+      },]
+
       return (
         <div>
           Status History of {row.name}
-          <p>{console.log(row)}</p>
+          {typeof row.statusHistory === "undefined" ? (
+            <div></div>
+          ) : (
+              <div>
+                <p>{console.log(row.statusHistory)}</p>
+
+                <BootstrapTable
+            keyField="_id"
+            data={row.statusHistory}
+            columns={cols}
+          ></BootstrapTable>
+
+            </div>
+          )}
         </div>
       );
     },
     onExpand: (row, isExpand, rowIndex, e) => {
       if (isExpand) {
-        dispatch(fetchSingleRecord(row.id));
+        if (typeof row.statusHistory === "undefined") {
+          dispatch(fetchSingleRecord(row.id));
+        }
       }
     },
   };

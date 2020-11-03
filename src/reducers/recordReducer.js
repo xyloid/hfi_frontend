@@ -1,17 +1,23 @@
 import recordService from "../services/record";
 
 const recordReducer = (state = [], action) => {
-  console.log(action.data);
   switch (action.type) {
     case "GET_ALL":
-      console.log("GetAll");
       return action.data;
     case "GET_BY_ID":
       console.log("get by id");
-      return [action.data];
+      const ret = state.map((record) => {
+        if (record.id == action.data.id) {
+          return action.data;
+        } else {
+          return record;
+        }
+      });
+
+      return ret.sort(function (x, y) {
+        return x.timestamp - y.timestamp;
+      });
     case "INIT_RECORDS":
-        console.log("inside ");
-        console.log(action.data)
       return action.data;
     default:
       return state;
