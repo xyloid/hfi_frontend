@@ -53,7 +53,6 @@ const RecordTable = () => {
     
           return (
             <div>
-              Status History of {row.name}
               {typeof row.statusHistory === "undefined" ? (
                 <div></div>
               ) : (

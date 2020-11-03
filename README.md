@@ -8,3 +8,4 @@
 - `npm install redux` for state management
 - `npm install react-redux` forward state to various components
 - `npm install redux-thunk` for asynchronous actions
+- `npm install react-router-dom` for navigation

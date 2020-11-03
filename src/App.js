@@ -4,9 +4,12 @@ import recordService from "./services/record";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 import RecordTable from "./components/RecordTable";
+import { Button } from "react-bootstrap";
 
 import { initializeRecords } from "./reducers/recordReducer";
 import { useDispatch } from "react-redux";
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,26 +45,48 @@ const App = () => {
     setUser(null);
   };
 
+  const padding = {
+    padding: 5,
+  };
+
   return (
     <div className="container">
       <h1>HFI Data Viewer</h1>
-
-      {user === null ? (
-        <LoginForm handleSubmit={loginHandler} />
-      ) : (
+      <Router>
         <div>
-          <p>
-            <b>{user.name}</b> logged-in{" "}
-            <button onClick={logoutHandler}>logout</button>
-          </p>
+          <Link style={padding} to="/">
+            Home
+          </Link>
+          <Link style={padding} to="/login">
+            Login
+          </Link>
         </div>
-      )}
-
-      {user === null ? (
-        <div>Please login to view the data</div>
-      ) : (
-        <RecordTable />
-      )}
+        <Switch>
+          <Route path="/login">
+            <div>
+              {user === null ? (
+                <LoginForm handleSubmit={loginHandler} />
+              ) : (
+                <div>
+                  <p>
+                    <b>{user.name}</b> logged-in{" "}
+                    <Button variant="primary" onClick={logoutHandler}>
+                      logout
+                    </Button>
+                  </p>
+                </div>
+              )}
+            </div>
+          </Route>
+          <Route path="/">
+            {user === null ? (
+              <div>Please login to view the data</div>
+            ) : (
+              <RecordTable />
+            )}
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 };
