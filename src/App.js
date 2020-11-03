@@ -23,7 +23,7 @@ const App = () => {
       recordService.setToken(user.token);
       recordService.getAll().then((res) => dispatch(initializeRecords(res)));
     }
-  }, []);
+  }, [dispatch]);
 
   const handleLogin = async (event) => {
     event.preventDefault();

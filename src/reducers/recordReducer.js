@@ -5,7 +5,7 @@ const recordReducer = (state = [], action) => {
     case "GET_BY_ID":
       console.log("get by id");
       const ret = state.map((record) => {
-        if (record.id == action.data.id) {
+        if (record.id === action.data.id) {
           return action.data;
         } else {
           return record;

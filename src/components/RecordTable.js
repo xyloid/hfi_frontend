@@ -1,6 +1,6 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import { fetchSingleRecord, initializeRecords } from "../reducers/recordReducer";
+import { fetchSingleRecord } from "../reducers/recordReducer";
 import { useSelector, useDispatch } from "react-redux";
 
 const RecordTable = () => {
@@ -57,9 +57,7 @@ const RecordTable = () => {
               {typeof row.statusHistory === "undefined" ? (
                 <div></div>
               ) : (
-                <div>
-                  <p>{console.log(row.statusHistory)}</p>
-    
+                <div>  
                   <BootstrapTable
                     keyField="_id"
                     data={row.statusHistory}
