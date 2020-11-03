@@ -3,45 +3,25 @@ import React, { useState, useEffect } from "react";
 import recordService from "./services/record";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
+import RecordTable from "./components/RecordTable";
 
-import BootstrapTable from "react-bootstrap-table-next";
-
-import {
-  getAll,
-  fetchSingleRecord,
-  initializeRecords,
-} from "./reducers/recordReducer";
-import { useSelector, useDispatch } from "react-redux";
+import { initializeRecords } from "./reducers/recordReducer";
+import { useDispatch } from "react-redux";
 
 const App = () => {
   const dispatch = useDispatch();
-  const records = useSelector((state) => state);
 
-  const [data, setData] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  useEffect(async () => {
-    if (user != null) {
-      const d = await recordService.getAll();
-      setData(d);
-    }
-  }, []);
-
-  useEffect(async () => {
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      console.log(user);
       setUser(user);
       recordService.setToken(user.token);
-      const d = await recordService.getAll();
-      setData(d);
-
       recordService.getAll().then((res) => dispatch(initializeRecords(res)));
-      console.log(records);
-      console.log(data);
     }
   }, []);
 
@@ -58,8 +38,7 @@ const App = () => {
       setUser(user);
       setUsername("");
       setPassword("");
-      const d = await recordService.getAll();
-      setData(d);
+      recordService.getAll().then((res) => dispatch(initializeRecords(res)));
     } catch (exception) {
       console.log(exception);
     }
@@ -85,77 +64,6 @@ const App = () => {
     setUser(null);
   };
 
-  // for expandable table
-  const columns = [
-    {
-      dataField: "id",
-      text: "ID",
-    },
-    {
-      dataField: "name",
-      text: "Name",
-    },
-    {
-      dataField: "gender",
-      text: "Gender",
-    },
-    {
-      dataField: "age",
-      text: "Age",
-    },
-    {
-      dataField: "caseStatus",
-      text: "Case Status",
-    },
-    {
-      dataField: "plan",
-      text: "Plan",
-    },
-  ];
-
-  const expandRow = {
-    renderer: (row) => {
-      if (typeof row.statusHistory !== "undefined") {
-      }
-
-      const cols =[{
-        dataField: "statusCode",
-        text: "Status",
-      },
-      {
-        dataField: "timestamp",
-        text: "Time",
-      },]
-
-      return (
-        <div>
-          Status History of {row.name}
-          {typeof row.statusHistory === "undefined" ? (
-            <div></div>
-          ) : (
-              <div>
-                <p>{console.log(row.statusHistory)}</p>
-
-                <BootstrapTable
-            keyField="_id"
-            data={row.statusHistory}
-            columns={cols}
-          ></BootstrapTable>
-
-            </div>
-          )}
-        </div>
-      );
-    },
-    onExpand: (row, isExpand, rowIndex, e) => {
-      if (isExpand) {
-        if (typeof row.statusHistory === "undefined") {
-          dispatch(fetchSingleRecord(row.id));
-        }
-      }
-    },
-  };
-
   return (
     <div className="container">
       <h1>HFI Data Viewer</h1>
@@ -174,14 +82,7 @@ const App = () => {
       {user === null ? (
         <div>Please login to view the data</div>
       ) : (
-        <div>
-          <BootstrapTable
-            keyField="id"
-            data={records}
-            columns={columns}
-            expandRow={expandRow}
-          ></BootstrapTable>
-        </div>
+        <RecordTable />
       )}
     </div>
   );

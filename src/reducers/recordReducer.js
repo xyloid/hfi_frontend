@@ -2,8 +2,6 @@ import recordService from "../services/record";
 
 const recordReducer = (state = [], action) => {
   switch (action.type) {
-    case "GET_ALL":
-      return action.data;
     case "GET_BY_ID":
       console.log("get by id");
       const ret = state.map((record) => {
@@ -22,16 +20,6 @@ const recordReducer = (state = [], action) => {
     default:
       return state;
   }
-};
-
-export const getAll = () => {
-  return async (dispatch) => {
-    const fetchRecords = await recordService.getAll();
-    return dispatch({
-      type: "GET_ALL",
-      data: fetchRecords,
-    });
-  };
 };
 
 export const fetchSingleRecord = (id) => {
