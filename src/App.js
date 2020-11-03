@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 
-import dataService from "./services/data";
+import recordService from "./services/record";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 
-import { Table } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 
+import {
+  getAll,
+  fetchSingleRecord,
+  initializeRecords,
+} from "./reducers/recordReducer";
+import { useSelector, useDispatch } from "react-redux";
+
 const App = () => {
+  const dispatch = useDispatch();
+  const records = useSelector((state) => state);
+
   const [data, setData] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +24,7 @@ const App = () => {
 
   useEffect(async () => {
     if (user != null) {
-      const d = await dataService.getAll();
+      const d = await recordService.getAll();
       setData(d);
     }
   }, []);
@@ -26,9 +35,13 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON);
       console.log(user);
       setUser(user);
-      dataService.setToken(user.token);
-      const d = await dataService.getAll();
+      recordService.setToken(user.token);
+      const d = await recordService.getAll();
       setData(d);
+
+      recordService.getAll().then((res) => dispatch(initializeRecords(res)));
+      console.log(records);
+      console.log(data);
     }
   }, []);
 
@@ -41,11 +54,11 @@ const App = () => {
       const user = await loginService.login({ username, password });
       console.log(user);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
-      dataService.setToken(user.token);
+      recordService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
-      const d = await dataService.getAll();
+      const d = await recordService.getAll();
       setData(d);
     } catch (exception) {
       console.log(exception);
@@ -87,21 +100,33 @@ const App = () => {
       text: "Gender",
     },
     {
-        dataField: "age",
-        text: "Age",
-      },
-      {
-        dataField: "caseStatus",
-        text: "Case Status",
-      },
-      {
-        dataField: "plan",
-        text: "Plan",
-      },
+      dataField: "age",
+      text: "Age",
+    },
+    {
+      dataField: "caseStatus",
+      text: "Case Status",
+    },
+    {
+      dataField: "plan",
+      text: "Plan",
+    },
   ];
 
   const expandRow = {
-    renderer: (row) => <div>Status History of {row.name}</div>,
+    renderer: (row) => {
+      return (
+        <div>
+          Status History of {row.name}
+          <p>{console.log(row)}</p>
+        </div>
+      );
+    },
+    onExpand: (row, isExpand, rowIndex, e) => {
+      if (isExpand) {
+        dispatch(fetchSingleRecord(row.id));
+      }
+    },
   };
 
   return (
@@ -112,8 +137,10 @@ const App = () => {
         loginForm()
       ) : (
         <div>
-          <p>{user.name} logged-in <button onClick={logoutHandler}>logout</button></p>
-          
+          <p>
+            {user.name} logged-in{" "}
+            <button onClick={logoutHandler}>logout</button>
+          </p>
         </div>
       )}
 
@@ -121,9 +148,12 @@ const App = () => {
         <div>Please login to view the data</div>
       ) : (
         <div>
-          <BootstrapTable  keyField='id' data={data} columns={columns} expandRow={expandRow}>
-
-          </BootstrapTable>
+          <BootstrapTable
+            keyField="id"
+            data={records}
+            columns={columns}
+            expandRow={expandRow}
+          ></BootstrapTable>
         </div>
       )}
     </div>

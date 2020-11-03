@@ -13,4 +13,11 @@ const getAll = async () => {
   return response.data;
 };
 
-export default { getAll, setToken };
+const fetchById = async (id) => {
+  const config = { headers: { Authorization: token } };
+
+  const response = await axios.get(baseUrl + "/" + id, config);
+  return response.data;
+};
+
+export default { getAll, setToken, fetchById };
