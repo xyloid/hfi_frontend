@@ -50,7 +50,7 @@ const App = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container"> 
       <Router>
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -65,7 +65,7 @@ const App = () => {
                 {user ? (
                   <em>
                     {user.name} logged in
-                    <Button variant="primary" onClick={logoutHandler}>
+                    <Button variant="outline-primary" size="sm" onClick={logoutHandler}>
                       logout
                     </Button>
                   </em>
