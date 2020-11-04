@@ -64,7 +64,7 @@ const App = () => {
               <Nav.Link href="#" as="span">
                 {user ? (
                   <em>
-                    {user.name} logged in
+                    {user.name} logged in {" "}
                     <Button variant="outline-primary" size="sm" onClick={logoutHandler}>
                       logout
                     </Button>
