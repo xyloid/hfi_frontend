@@ -7,32 +7,6 @@ Backend repo: https://github.com/xyloid/hfi_backend
 This repo is the front end of HFI data viewer. A producrion build will be created and copied to the backend repo.
 Then the backend repo will be deployed to Heroku as a whole application.
 
-## Snapshots
-
-### Home Page Before Loggin
-
-![Home page before loggin](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/home_page.png)
-
-### Login Page
-username/password: admin/admin 
-
-![Login Page](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/login.png)
-
-### Login Page After Logged In
-
-![Login Page After Logged In](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/loggedin.png)
-
-### Home Page After Logged In
-![Home Page After Logged In](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/list_data.png)
-
-### Expand One Row
-expand row by click the row directly, click the row again, the content will collapse
-![Expand One Row](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/expand_row.png)
-
-### Expand More Rows
-expand multiple rows at sametime
-![Expand More Rows](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/expand_rows.png)
-
 ## Technologies
 
 - React.js
@@ -58,3 +32,29 @@ expand multiple rows at sametime
 
 - `npm run build`
 - `cp -r build ../backend/`
+
+## Snapshots
+
+### Home Page Before Loggin
+
+![Home page before loggin](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/home_page.png)
+
+### Login Page
+username/password: admin/admin 
+
+![Login Page](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/login.png)
+
+### Login Page After Logged In
+
+![Login Page After Logged In](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/loggedin.png)
+
+### Home Page After Logged In
+![Home Page After Logged In](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/list_data.png)
+
+### Expand One Row
+expand row by click the row directly, click the row again, the content will collapse
+![Expand One Row](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/expand_row.png)
+
+### Expand More Rows
+expand multiple rows at sametime
+![Expand More Rows](https://github.com/xyloid/hfi_frontend/blob/main/snapshots/expand_rows.png)
