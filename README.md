@@ -2,6 +2,8 @@
 
 Heroku deployment: https://hfi-data-viewer.herokuapp.com/
 
+Backend repo: https://github.com/xyloid/hfi_backend
+
 This repo is the front end of HFI data viewer. A producrion build will be created and copied to the backend repo.
 Then the backend repo will be deployed to Heroku as a whole application.
 
