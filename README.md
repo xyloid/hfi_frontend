@@ -20,3 +20,8 @@
 ## How to Start
 
 - run `npm start` in the project root dir
+
+## Production Build
+
+- `npm run build`
+- `cp -r build ../backend/`
